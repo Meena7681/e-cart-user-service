@@ -1,6 +1,5 @@
 import { ProductInput } from "../dto/product-input";
-import { ProductDoc, products } from "../models/product-model";
-
+import { ProductDoc, products } from "../models";
 export class ProductRepository {
   constructor() {}
   async createProduct({
@@ -9,7 +8,7 @@ export class ProductRepository {
     price,
     category_id,
     image_url,
-  }: ProductInput) {
+  }: ProductInput): Promise<ProductDoc> {
     return products.create({
       name,
       description,
@@ -26,7 +25,7 @@ export class ProductRepository {
       .limit(pages ? pages : 500);
   }
   async getProductById(id: string) {
-    return products.findById(id);
+    return await(products.findById(id)) as ProductDoc;
   }
   async updateProduct({
     id,
@@ -47,6 +46,8 @@ export class ProductRepository {
     return existingProduct.save();
   }
   async deleteProduct(id: string) {
-    return products.deleteOne({ _id: id });
+    const { category_id } = (await products.findById(id)) as ProductDoc;
+    const DeleteResult = await products.deleteOne({ _id: id });
+    return { category_id, DeleteResult };
   }
 }

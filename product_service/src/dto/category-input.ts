@@ -13,6 +13,7 @@ export class CategoryInput {
   displayOrder: number;
 
   imageUrl: string;
+  category_id: string;
 }
 
 export class AddItemInput {
