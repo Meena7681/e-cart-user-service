@@ -5,6 +5,7 @@ export class ProductInput {
 
   @Length(3, 128)
   name: string;
+
   @Length(3, 256)
   description: string;
 
@@ -14,5 +15,8 @@ export class ProductInput {
 
   @IsNumber()
   price: number;
+
   availability: boolean;
+
+  seller_id: number;
 }
